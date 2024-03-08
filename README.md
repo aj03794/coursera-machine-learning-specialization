@@ -149,5 +149,56 @@
       - `1/m` to take the average
       - The `2` is to make some of the later calculations a bit neater
         - This is optional
+  - This is one example, there are many more types of cost functions
+    - Squared error cost is the most popular for linear regression and other types of algorithms as well
 
 ![Alt text](./images/12.png)
+
+### Cost Function Intuition
+
+- We want to minimize the cost (`J(w, b)`)
+- Below is a simplified cost function where `b = 0`
+- Goal: Minimize the cost function
+
+![Alt text](./images/13.png)
+
+- Below is an example where we have a perfectly fit line to our training example, `w = 1`
+  - Note that the cost function is 0
+- In the graph on the right had side, note that `J(1) = 0` because our cost function was 0 when `w = 1`
+
+![Alt text](./images/14.png)
+
+- Below is an exmaple where we have `w = 0.5` which is not perfectly fit
+
+![Alt text](./images/15.png)
+
+- Below is an eaxmple where we have `w = 0`
+
+![Alt text](./images/16.png)
+
+- We can keep doing this for many many values of `w`
+- By continuing to do this calculation, we can create find what the cost function J looks like
+  - Each value of parameter `w` corresponds to a different fitting line in f(x)
+  - So for each point on the J(w) graph, you have a corresponding line for f(x)
+
+![Alt text](./images/17.png)
+
+- We want to choose `w` that minimizes `J(w)`
+  - Following this example, we would choose `w = 1` because `J(w) = 0` here
+
+### Visualizing the Cost Function
+
+- When we have both w and b (b != 0)
+  - Note that this is the 3D version of the graph we had when b = 0
+- As w and b are varied, get different values for the cost function `J`
+  - Any point on this graph is a particular selection of w and b
+
+![Alt text](./images/18.png)
+
+- These 3D plots can be generated as a 2D contour plot to better visualize the cost function and to see the minimum
+
+![Alt text](./images/19.png)
+
+### Visualization Examples
+
+- 
