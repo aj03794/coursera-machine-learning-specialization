@@ -20,6 +20,7 @@
   - i is an index
 
 
+
 ![Alt text](./images/10.png)
 
 
@@ -118,6 +119,8 @@
 - Now how do we decide what `f` is?
 - So `f` will take some input x and depending on values w and b, f will output some value as a prediction (y_hat)
   - Same as `f(x)`
+- w = weight
+- b = bias
 
 ![Alt text](./images/8.png)
 
@@ -125,3 +128,26 @@
 - Single variable linear regression is sometimes called univariate linear regression
 
 ![Alt text](./images/9.png)
+
+## Linear Regression with One Variable
+
+### Cost Function
+
+- Tells us how well the model is doing so we can try and make the model better
+- `w` and `b` are called the parameters of the model
+  - Parameters can be adjusted during training
+  Also referred to as `coefficients` or `weights`
+
+![Alt text](./images/10.png)
+
+![Alt text](./images/11.png)
+
+- How do we determine how well our model is doing? To answer that, we use a cost function
+  - For known examples, we compare the predicted value, `y_hat` to the actual value `y`, and we do this for all examples
+    - We take the square difference of `y_hat` and `y` for all training examples
+    - The `1/2m` is for 2 reasons
+      - `1/m` to take the average
+      - The `2` is to make some of the later calculations a bit neater
+        - This is optional
+
+![Alt text](./images/12.png)
