@@ -8,7 +8,7 @@
 ## Terminology
 
 - Data used to train the model is called the `training set`
-- `Train` the model to `learn` from the `training set` so it can `predict` another house
+- `Train` the model to `learn` from the `training set` so it can make a `predict` 
 - `x` = input variable
   - Also called a `feature` or `input feature`
 - `y` = output variable
@@ -201,4 +201,155 @@
 
 ### Visualization Examples
 
-- 
+
+![Alt text](./images/20.png)
+
+- Note where w and b intersect on the cost function is far from the minimum because it's not a good fit to the training set
+
+![Alt text](./images/21.png)
+
+- Another example below
+
+![Alt text](./images/22.png)
+
+- Example with cost function close to the minimum
+
+![Alt text](./images/23.png)
+
+## Training the model with Gradient Descent
+
+### Gradient Descent
+
+- Systematic way to minimize w and b
+- Used heavily in machine learning
+- Gradient descent can be used to minimize any function, not just the cost function for linear regression
+- Outline
+  - Start out with some initial guesses for w and b
+    - Doesn't matter what initial values, commonly both are set to 0
+  - Keep changing w,b to reduce J(w, b) until we settle at or near a minimum
+    - J is not always a parabola with a single minimum
+      - Linear regression with a cost function using squared error cost function will always be a bowl shape
+
+![Alt text](./images/24.png)
+
+- Want to get from hill to valley as fast as possible
+- If I want to take a baby step and get down hill to valley as quickly as possible, what direction do we go?
+  - This repeats until we hit a minimum
+
+![Alt text](./images/25.png)
+
+- What if you started in a different location?
+- We may end up in a different valley
+- These 2 valleys are called `local minima`
+
+![Alt text](./images/26.png)
+
+### Implementing Gradient Descent
+
+- Update your parameter `w` by taking the *current* value of `w` and adjusting it a small amount
+  - *Alpha = learning rate*
+    - Small positive number between 0 and 1
+    - Controls how big of a step we take downhill during gradient descent
+  - Partial derivative of `J(w,b)` with respect to `w`
+    - Which direction to take step
+    - Also determiens size of step we take downhill (along with learning rate)
+- There is a similar formula for `b`
+  - Partial derivative happens with respect to `b` in this case
+- Repeat these operations until we have convergence
+  - This means that `w` and `b` do not change very much
+- Want to update both `w` and `b` simultaneously
+
+![Alt text](./images/27.png)
+
+### Gradient descent intuition
+
+![Alt text](./images/28.png)
+
+### Learning Rate
+
+- Has a huge impact on efficiency of your implementation
+- If chosen poorly, gradient descent may not work at all
+
+![Alt text](./images/29.png)
+
+- What if you've chosen a w so that you're already at a local minimum?
+  - Gradient descent will leave `w` unchanged
+
+![Alt text](./images/30.png)
+
+- As we get closer to the local minimum, the steps become smaller because the derivative is smaller leading to a smaller change in w
+
+![Alt text](./images/31.png)
+
+### Gradient Descent for Linear Regression
+
+![Alt text](./images/32.png)
+
+- Gradient descent can lead to a local minimum instead of a global minimum
+- When you use a squared error cost function, there will NEVER be multiple local minimum, there is only a single global minimum
+  - This is because the squared error cost function produces a bowl shaped cost function
+
+![Alt text](./images/33.png)
+
+### Running Gradient Descent
+
+![Alt text](./images/34.png)
+
+- Now we start taking steps to move to the minimum
+
+![Alt text](./images/35.png)
+
+- This gradient descent process is called `batch gradient descent`
+  - `Batch` means that for each step of gradient descent uses all of the training examples for each update
+
+![Alt text](./images/36.png)
+
+## Multiple Features
+
+- Original linear regression we had one feature
+
+![Alt text](./images/37.png)
+
+- Note that a row of features is sometimes called a `row vector`
+  - A vector here is basically the same thing conceptually as an array of values
+  - A row vector has all of the features values for that particular example
+
+![Alt text](./images/38.png)
+
+- Each feature will have it's own weight, so some features will contribute more to the price than the other, for example
+  - Some features may DECREASE the value of the house, like price in years
+
+![Alt text](./images/39.png)
+
+- The vector weights and b are the *parameters* of the model
+- We can do `vector_w * vector_x` (dot product of 2 vectors) to simplify the expression
+- This is called **Multiple Linear Regression**
+  - Note that this is NOT multi-variate regression (that is something else)
+
+![Alt text](./images/40.png)
+
+### Vectorization Part 1
+
+- Makes code shorter and makes it run more efficiently
+- Enables usage of things like GPUs and modern numerical linear algebra libraries
+  - *Numpy* is the most popular of these numerical linear algebra libraries
+- Below are 2 examples without vectorization
+
+![Alt text](./images/41.png)
+
+- With vectorization
+  - Makes code shorter
+  - Results in code running much faster than 2 non-vectorization implementation
+    - Numpy dot function uses parallel computing to make things faster
+
+![Alt text](./images/42.png)
+
+### Vectorization Part 2
+
+- Vectorization scales well to large datasets and modern hardware
+
+![Alt text](./images/43.png)
+
+- Below is gradient descent with vectorization
+
+![Alt text](./images/44.png)
