@@ -353,3 +353,106 @@
 - Below is gradient descent with vectorization
 
 ![Alt text](./images/44.png)
+
+### Gradient Descent for Multiple Linear Regression
+
+![Alt text](./images/45.png)
+
+- Below is gradient descent for multiple linear regression
+
+![Alt text](./images/46.png)
+
+#### An alternative to gradient descent
+
+- Alternative to finding w and b for multiple linear regression
+- Uses the *normal equation method*
+  - Works only for linear regression
+- Solves all in 1 go without multiple iterations
+- Slow when number of features is large
+- Machine learning libraries may use this behind the scenes
+
+### Feature Scaling Part 1
+
+- Enables gradient descent to run much faster
+- In below example, size of house has relatively large range and number of bedrooms has small range
+- Actual cost of house is 500k
+
+![Alt text](./images/47.png)
+
+- When possible values of feature are small, reasonable value for parameters are relatively large
+- Below shows the relationship between the range of values for a feature and what happens to changes in the weight of that feature
+  - Changing the weight of w1 for square footage has a big change in the cost function
+  - Larger change is required to w2 in order to change the prediction as much so large values to w2 do not change the cost function that much 
+
+![Alt text](./images/48.png)
+
+- With gradient descent, because the ovals are so tall and skinny, we may bounce back and forth before finding the minimum
+
+![Alt text](./images/49.png)
+
+- In situations like this, it's useful to *scale* the feature
+  - May x1 ranges from 0 to 1 and x2 scales from 0 to 2
+
+![Alt text](./images/50.png)
+
+- To summarize, haven't different features that have very different scales can cause gradient descent to scale slowly - rescaling so all features have a comparable range of values can alleviate this issue
+
+### Feature Scaling Part 2
+
+- How to actually scale features
+- Can divide the range by the maximum so you get ranges between 0 and 1
+
+![Alt text](./images/51.png)
+
+- Can also do *mean normalization*
+- Center the values around 0
+  - Typically from -1 to 1
+
+![Alt text](./images/52.png)
+
+- *Z-score normalization*
+- Calculate standard deviation of each feature
+
+![Alt text](./images/53.png)
+
+- When performing feature scaling, aim for *-1 <= x<sub>j</sub> <= 1* for each feature x<sub>j</sub>
+
+![Alt text](./images/54.png)
+
+- When it doubt perform feature scaling, it's not going to cause harm
+
+### Checking Gradient Descent for Convergence
+
+- When running gradient descent, how can you tell if it is converging (finding global minimum of cost function)
+- Job of gradient descent is to find parameters w and b that minimize the cost function *J*
+
+![Alt text](./images/55.png)
+
+- Note with the above that if there is ever an *increase* in *J* as we increase iterations, we need to test a new learning rate
+  - The learning rate may be too large or there could be a bug in the code
+- Note that the cost of *J* begins leveling off as interations increase
+- Number of iterations for convergence can vary greatly across applications
+
+<br>
+
+- You can also use an *automatic convergence test* 
+- Choosing the right value for epsilon can be difficult
+
+![Alt text](./images/56.png)
+
+### Choosing the Learning Rate
+
+- If the learning rate is too slow, gradient descent will run very slowly
+- If the learning rate  is too large, gradient descent may not converge
+- Below is an example of an issue
+  - Issue may be a bug in code or that learning rate is too large
+    - An example could be `w1 = w1 + alpha(d1)`
+      - It should be a `-` instead of a `+`
+  - Bottom graph shows that we are moving away from the minimum
+
+![Alt text](./images/57.png)
+
+- To fix this, can use a smaller learning rate
+  - Can try a range of values and run gradient descent for small number of iterations
+
+![Alt text](./images/58.png)
