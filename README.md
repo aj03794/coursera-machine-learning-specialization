@@ -456,3 +456,248 @@
   - Can try a range of values and run gradient descent for small number of iterations
 
 ![Alt text](./images/58.png)
+
+### Feature Engineering
+
+- With housing prediction, it may be better to have a single feature *area* as opposed to having that broken up between *frontage* and *depth*
+  - Creating a new feature like this is called *feature engineering*
+    - Usually done by transforming or combining the original features
+    - This can result in a better model
+
+![alt text](./images/59.png)
+
+
+### Polynomial Regression
+
+- Nonlinear functions for data
+  - Quadratic function
+  - Cubic function
+  - Etc...
+
+![alt text](./images/60.png)
+
+- If we have features that are squared or cubed, feature scaling becomes more important so we have features into comparable ranges of values
+
+![alt text](/.images/61.png)
+
+- *How to decide what features to use*
+  - Comes later in the course
+
+<br>
+
+- When running gradient descent, it will help pick the "correct" features for you
+  - The less weight a feature has, the less important it is
+- Imagine we have a formula like
+  - w0x0 + w1x1^2 + w2x2^3 + b
+  - After gradient descent if
+    - w0 = 0.08
+    - w1 = 0.54
+    - w2 = 0.03
+    - b = 0.0106
+    - Weight of w1 much greater than w2
+
+## Classification
+
+- Output variable value can take on 1 of a small range of values
+  - Class and category are used interchangeably 
+
+![alt text](./images/62.png)
+
+- Example for training set for malignant tumor
+  - If you tried to use linear regression here, it can be any possible real number - not just 0 or 1
+  - Could try and use a threshold to decide what becomes 0 and what becomes 1
+
+![alt text](./images/63.png)
+
+- Now if a new `x` is added, it will shift the line and shifts what we identify as 0 or 1
+  - We now have `x`'s that are misidentified
+    - `Decision boundary` is now in a bad location
+
+![alt text](./images/64.png)
+
+- *Logistic Regression* is used for classification problems and removes these issues
+
+### Logistic Regression
+
+- Continuing example of determining if a tumor is malignant
+- Logistic regression will fit a curve to this data better
+  - It's more of an `S` curve
+
+![alt text](./images/65.png)
+
+- Algorithm will use a *threshold* to determine if the tumor is malignant or not
+- *Sigmoid function* (aka logistic function) is very commonly used in logistic regression
+  - Outputs values between 0 and 1
+
+![alt text](./images/66.png)
+
+- When `z` is a very large positive number, `G(x) = 1` (approximately)
+- When `z` is very small (large negative number), `G(z) = 0` (approximately)
+
+<br>
+
+- Below is logistic regression formula
+  - Inputs feature or set of features and it outputs a value between 0 and 1
+
+![alt text](./images/67.png)
+
+- Outputs *probability* that the class is *1*
+- Example
+  - x = tumor size
+  - y = 0 (not malignant)
+  - y = 1 (malignant)
+  - value is 0.7 which means there is a 70% chance that the tumor is malignant
+    - 30% chance it is not malignant then
+
+![alt text](./images/68.png)
+
+### Decision Boundary
+
+- May set a threshold where value above is 1 and below is 0
+- Below is an example when the threshold is 0.5
+
+![alt text](./images/69.png)
+
+- Below is an example of the decision boundary with two features x1 and x2
+  - w1 = 1
+  - w2 = 1
+  - b = -3
+
+![alt text](./images/70.png)
+
+- What about non-linear decision boundaries
+- Can use polynomials in logistic regression just like we did in linear regression
+
+![alt text](./images/71.png)
+
+- Decision boundaries can be much more complicated
+
+![alt text](./images/72.png)
+
+### Cost function for logistic regression
+
+- The cost function gives you a way to measure how well a specific set of parameters fit the the training data
+  - Gives way to choose better parameters
+- Squared error cost function is not ideal for logistic regression
+- Give training set, how can we choose parameters *w* and *b*
+
+![alt text](./images/73.png)
+
+- For linear regression, we used the *squared cost function*
+- With logistic regression, there are lots of local minimums if we use the squared error cost function
+
+![alt text](./images/74.png)
+
+- *Loss function* measures how well you are doing on one training example
+  - So *cost function* is a summation of the *loss* function
+
+<br>
+
+- Below is an example of what happens to Loss as f(x) -> 1 and f(x) -> 0 when y^(i) = 1
+  - As f(x) -> 1, loss approaches 0
+    - The tumor is malignant, so as our prediction gets closer to 1, loss gets closer to 0 (0 means no loss)
+    - If the tumor is malignant, as our prediction gets closer to 0, loss gets closer to 1 (1 meaning completely wrong)
+    - 
+![alt text](./images/75.png)
+
+- Next is an example when y^(i) = 0
+
+![alt text](./images/76.png) 
+
+- Cost function for logistic regression
+
+![alt text](./images/77.png)
+
+### Simplified Cost Function for Logistic Regression
+
+- There is a simplified loss function (and cost function) that exists for binary classification problems where `y` can only be 0 or 1
+- Below is the simplified loss function and the logic to get to that
+
+![alt text](./images/78.png)
+
+- Below is the simplified cost function using the simplified loss function
+
+![alt text](./images/79.png)
+
+### Gradient Descent Implementation
+
+- How to find *w* and *b*
+- Below is general gradient descent approach
+
+![alt text](./images/80.png)
+
+![alt text](./images/81.png)
+
+- This looks just like linear regression, but remember f(x) itself is a different function
+
+![alt text](./images/82.png)
+
+- Just like with linear regression: 
+  - Want to monitor gradient descent (learning curve)
+  - Use a vectorized implementation to improve speed
+  - Use feature scaling if needed
+
+## The Problem of Overfitting
+
+- Sometimes our learning algorithm can run into *overfitting*
+- Underfit means algorithm does not fit training set well - it has *high bias*
+- *Generalization* means that the algorithm does fit the training set well and would predict a new unseen value fairly accurately
+- Overfit means the algorithm has fit the training set too well - it has *high variance*
+  - You can even have a 0 cost function because we're fitting the data perfectly
+  - If the training sets were just a little bit differently, the the function that the algorithm fits could be totally different and therefore the algorithm could make totally different predictions
+    - This is what we mean when we say *high variance*
+
+![alt text](./images/83.png)
+
+- We want to find a model that generalizes well - shouldn't overfit or underfit
+- These same problems exist for classification problem as well
+
+![alt text](./images/84.png)
+
+### Addressing Overfitting
+
+- Collecting more training examples 
+  - Can make your overfitting algorithm end up working pretty well
+
+![alt text](./images/85.png)
+
+- Select features to include/exclude to reduce overfitting - *feature selection*
+  - Having a lot of features without many training examples can lead to overfitting
+  - Disadvantage, by only using some features, we're throwing away some information that may be useful
+    - There are tools that will automatically choose the most useful features to use
+
+![alt text](./images/86.png)
+
+- Regularization is a way to keep all features and prevents features from having an overly large effect on the algorithm (which usually is what causes overfitting)
+  - Usually w values are regularized and b isn't
+  - This is commonly used with neural networks
+
+![alt text](./images/87.png)
+
+### Cost Function with Regularization
+
+- Basically what we are doing with the below since we have 1000 multipled to w3^2 and w4^2, we need to have very small values for w3 and w4 so that we minimize the cost
+  - We *regularized* w3 and w4
+
+![alt text](./images/88.png)
+
+- If you have a lot of features, you may not know which are the most important ones and which to penalize
+- So you penalize all the features (all the wj) parameters which leads to the model being less prone to overfitting
+- Lambda is the *regularization parameter*
+
+![alt text](./images/89.png)
+
+- In this modified cost function, we want to minimize the original cost and the regularization term
+  - Minimizing cost is for fitting the data
+  - Regularization term is to keep wj small to reduce overfitting
+  - Labmda is used to balance between these 2 goals
+- If labmda is 0, model will overfit
+- If labmda huge, model will underfit
+
+![alt text](./images/90.png)
+
+### Regularized Linear Regression
+
+- Below shows linear regression and the new formulas with regularization
+
+![alt text](./images/91.png) 
