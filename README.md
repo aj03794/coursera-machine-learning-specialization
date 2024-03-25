@@ -700,4 +700,314 @@
 
 - Below shows linear regression and the new formulas with regularization
 
-![alt text](./images/91.png) 
+![alt text](./images/91.png)
+
+- Implementing gradient descent
+
+![alt text](./images/92.png)
+
+- Below is meant to give a deeper intuition of what regularization is doing
+  - On every single iteration, multiple *w* by a number slightly less than *1* which shrinks the value of w<sub>j</sub> by a little bit
+
+![alt text](./images/93.png)
+
+
+### Regularized Logistic Regression
+
+
+![alt text](./images/94.png)
+
+![alt text](./images/95.png)
+
+## K-Means - What is Clustering
+
+- Unsupervised learning algorithm
+- In supervised learning, we had labeled examples that included the features and the targets
+
+![alt text](./images/96.png)
+
+- In unsupervised learning, we just have the features *x*, we don't have any target labels *y*
+
+![alt text](./images/97.png)
+
+- Clustering looks for one particular type of structure, can the data points be grouped together?
+
+![alt text](./images/98.png)
+
+- Applications of clustering
+  - Grouping similar news articles together
+  - Market segmentation - many types of learners for examples (develop career, better understand AI, etc)
+  - DNA data
+  - Astronomical data analysis
+
+### K-means Intuition
+
+- Will take a random guess where the center of the clusters you want to find
+- In this example, we use 2 clusters
+
+![alt text](./images/99.png)
+
+- K-means will repeatedly do 2 things
+  - Assign points to cluster centroids
+  - Move cluster centroids
+- Step 1: Go through each of points and will look which centroid it's closer to
+
+![alt text](./images/100.png)
+
+- Step 2: Look at all red points and take average of them, move the red cross to whatever the average location of the red dots
+  - It recomputes the centroids
+
+![alt text](./images/101.png)
+
+- Repeat step 1 again
+  - Look at all 30 data points and see whether they're closer to the blue or red centroid
+
+![alt text](./images/102.png)
+
+- Repeat step 2 again
+
+![alt text](./images/103.png)
+
+- Continue this process over and over again until there are no more changes - once there are no more, the k means clusters have *converged*
+
+![alt text](./images/104.png)
+
+### K-means Algorithm
+
+- Randomly initialize *K* cluster centrods `mu1, mu2, ..., muk`
+  - Whatever dimension the training data has, your centroids would have the same dimensions
+    - If training set is 2D then clusters would be 2D
+- Repeatedly carry out 2 steps
+  - Assign points to cluster centroids
+  - Move cluster centroids
+    - Do this by using the data points currently assigned to this centroid and finding the average spot among all of those
+      - For example, if we had 4 training examples assigned to a particular centroid, we would do `mu11 = 1/4(x1 + x5 + x6 + x10)`
+        - Each of these training examples (in this example), would have x values are arrays with 2 values in them (so mu1 will have 2 values in it)
+
+![alt text](./images/105.png)
+
+- There is an edge case here, what happens if a cluster has 0 points assigned to it
+  - Most common thing to do is to elimiate that cluster
+    - Could also reassign the centroid randomly
+
+<br>
+
+- K-means is frequently applied where clusers are not that well separated
+  - Example, how to size small, medium, and large shirts
+
+![alt text](./images/106.png)
+
+- K-means is trying to optimize a specific cost function
+
+### Optimization Objective
+
+- K-means algorithm also optimizes a specific cost function (not gradient descent)
+- Cost function is the average squared difference for every training example xi and the location of the cluster centroid to which the training example xi has been assigned
+- This cost calculates *Distortion* (according to literature)
+
+![alt text](./images/107.png)
+
+- If you're trying to assign ci to the closest cluster centroid, then you want to minimize the squared distance between xi 
+- Below is an example of this
+  - The closest cluster centroid is the red x
+
+![alt text](./images/108.png)
+
+- Below is example of step 2
+
+![alt text](./images/109.png)
+
+- **Cost function should never increase (would be a bug in the code)**
+
+### Initializing K-means
+
+- How to choose locations for K cluster centroids for mu1, ..., muk
+- Choose K < m
+  - K = number of cluster centroids
+  - m = number of training examples
+- Randomly pick K training examples
+  - Set m1, m2, ..., mk equal to these K examples
+  - Note in previous slides, K was randomly initialized without doing this - they were just random examples in the space
+- Depending on how you choose the random initial cluster centoids, K-means will end up choosing a different set of clusters for your data set
+
+![alt text](./images/110.png)
+
+- Below is an example of K-means creating 3 different clusters based on the initialization
+
+![alt text](./images/111.png)
+
+- What you can do is run the algorithm multiple times with different cluster centroid initializations, calculate the cost function for each of those, and choose the one that has the lowest cost
+- Smallest cost would be J1
+
+![alt text](./images/112.png)
+
+- Formal algorithm for this
+  - Doing this 50-1000 times is pretty common
+
+![alt text](./images/113.png)
+
+### Choosing the Number of Clusters
+
+- How to choose K?
+- Usually the right value of K is ambigious
+- Few techniques to try and automatically choose number of clusters
+- One method people use is called the *elbow method*
+- Run K means with variety of K and plot the cost function as a function of the number of clusters
+- A lot of applications may not have this sort of "elbow"
+
+![alt text](./images/114.png)
+
+- **Note choosing K which minimizes the cost function does not work**
+
+<br>
+
+- Often you want to get cluseers for some later purpose, you want to do something with the cluster
+- Evaluate K-means based on how well it performs on that later purpose
+- In the below example, how many clusters you have is dependent on how many t-shirt sizes you want
+
+![alt text](./images/115.png)
+
+
+## Anomaly Detection - Finding Unusual Events
+
+- Look at unlabeled dataset of normal events to learn what an unusual or anamolous event
+- Example: aircraft engine issue detector
+- After manufacturing, you have a number of features
+  - x<sub>1</sub> = heat generated
+  - x<sub>2</sub> = vibration intensity
+  - ...
+- We have a datset of "normal" engines
+- We want to know if a new engine is okay or could it have a defect
+
+![alt text](./images/116.png)
+
+- The most common algorithm for doing this is called *Density estimation*
+- Learning algorithm will try and figure out the what are the values of the features x1 and x2 that have a high probability and a low probability
+
+![alt text](./images/117.png)
+
+- When given new example, compute probability of x<sub>test</sub>
+- If p(x<sub>test</sub>) < epislon, raise a flag for a potential anomaly
+
+![alt text](./images/118.png)
+
+- Used in many places today
+  - Fraud detection
+    - x<sup>(i)</sup> = features of user i's activities
+      - How often does this user log in? How many transactions?
+        - If these are out of the normal bounds, flag an anomaly
+    - Model p(x) from data
+    - Identify unusual users by checking which have p(x) < epsilion
+      - Perform identity verification
+  - Manufacturing
+    - x<sup>(i)</sup> = features of product i
+      - airplane engine
+      - circuit board
+      - smartphone
+  - Monitoring computers in a datacenter
+    - x<sup>(i)</sup> = features of machine i
+      - x1 = memory use
+      - x2 = number of disk accessess
+      - x3 = CPU load
+      - x4 = network traffic
+
+### Gaussian (Normal) Distribution
+
+- Bell-shaped distribution
+  - sigma = standard deviation
+  - sigma^2 = variance
+
+![alt text](./images/119.png)
+
+![alt text](./images/120.png)
+
+- Guassian distribution example
+
+![alt text](./images/121.png)
+
+- When applying this to anomaly detection, given a dataset of *m* examples
+  - What a good choice is for the mean (mu) and for variance (sigma^2)
+  - Calculations are in image below
+
+![alt text](./images/122.png)
+
+- Below shows to examples of where one x is okay, it has a high p(x) and the other is on the fringes are may not be okay
+
+![alt text](./images/123.png)
+
+- The above is only for a single feature, usually you have many features
+
+### Anomaly Detection Algorithm
+
+- Note here, we would want the features to be *statistically independent* but usually it doesn't make a difference in reality
+- In this example x<sub>1</sub> is engine heat, etc...
+  - x<sup>(1)</sup> would be an array of values for engine heat
+- Each feature would have it's own gaussian distribution with own mean (mu), standard deviation (sigma), and variance (sigma^2)
+
+
+![alt text](./images/124.png)
+
+- If p(x1 = high temp) = 1/10 && p(x2 = high vibration) = 1/20
+  - What are the chances that the engine vibrations a lot and is very hot?
+    - p(x1, x2) = p(x1) * p(x2) = 1/10 * 1/20 = 1/200
+
+<br>
+
+- Complete anomaly detection algorithm
+  - Choose n features x<sub>i</sub> you think might be indicative of anomalous examples
+  - Fit parameters mu1 -> mn and sigma<sup>2</sup>1 -> sigma<sup>2</sup>n
+  - Given new example, compute p(x)
+  - Anomaly if p(x) < epsilon
+
+- This tends to flag an anomaly if any feature of new example is very small or very large (outside of the normal gaussian distribution)
+
+![alt text](./images/125.png)
+
+- Example
+
+![alt text](./images/126.png)
+
+### Developing and Evaluating an Anomaly Detection System
+
+- Have a way to evaluate system
+- When developing a learning algorithm, making decision is much easier if we have a way of eavluating our algorithm - *real-number evaluation*
+  - Do we change epsilon? Do we have the right set of features?
+- Assume we have some labeled data, anomalous examples and non-anomalous examples
+  - y = 1, anomaly
+  - y = 0, not amomalous
+- With training set, assume not anomalous examples
+  - Note, in practice if you have some anomalous examples, usually this is okay
+- We will have a cross validation set and test set'
+  - Should have a few anomalous examples
+
+![alt text](./images/127.png)
+
+- Aircraft engines monitoring examples
+- We can use the cross validaton set to see how many anomalies the algorithm correctly flags
+  - Can use to tune epsilon and/or tune features
+- Evaluate on test set
+  - How many anomalies does it find, how many false positives does it have
+- This is still unsupervised learning because the training set is unlabeled (even though we're assuming they're non-anomalous)
+- If you have a very very small number of anomalies, then it makes more sense just to have a cross validation set and no test set
+  - Downside, don't have a *fair* way to tell how well this will do on new examples after we've tuned parameters from the cross validation set
+  - Higher risk of overfitting
+
+![alt text](./images/128.png)
+
+- Algorithm evalution
+- On a cross validation/test example x, do prediction
+  - Compare these predictions to the labels in the cross validations sets and test sets
+
+![alt text](./images/129.png)
+
+- **Building an accurate anomaly detection system is much easier if we have labeled examples**
+- *If you have a few labeled examples, why not use supervised learning instead of anomaly detection?*
+
+### Anomaly Detection vs. Supervised Learning
+
+- Key with anomaly detection is often used when there are many "different" types of anomalies
+  - For example, there are always new versions of fraud
+
+![alt text](./images/130.png)
+
+![alt text](./images/131.png)
